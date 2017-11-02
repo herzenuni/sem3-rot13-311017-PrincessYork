@@ -1,4 +1,3 @@
-choice = None
 menu = """
 		1. encrypt file
 		2. decrypt file
