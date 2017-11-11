@@ -1,3 +1,13 @@
+ENCRYPT_DICT = { chr(i) : chr(i + 13) for i in range(33, 127 - 13) }
+ENCRYPT_DICT.update( { chr(i) : chr(i - 94 + 13) for i in range(127 - 13, 127) } )
+#########################################################################
+keys = list(ENCRYPT_DICT.keys())
+values = list(ENCRYPT_DICT.values())
+#########################################################################
+DEENCRYPT_DICT = {}
+for i in range(len(keys)):
+	DEENCRYPT_DICT.update( { values[i] : keys[i] } )
+#########################################################################
 menu = """
 		1. encrypt file
 		2. decrypt file
@@ -15,26 +25,31 @@ def take_something(type = str, text = "put something here : "):
 			print("incorrect type")
 	return something
 #########################################################################
-def encrypt(text, move = 13):
-	encr_text = ""
-	for char in text:
-		if ord(char) >= 33 and ord(char) <= 126:
-			encr_text += chr(ord(char) + move)
-		else:
-			encr_text += char
-	return encr_text
-#########################################################################
-def decrypt(text, move = 13):
-	decr_text = ""
-	for char in text:
-		if ord(char) - move >= 33 and ord(char) - move <= 126:
-			decr_text += chr(ord(char) - move)
-		else:
-			decr_text += char
-	return decr_text
-#########################################################################
-def encrypt_file(function = encrypt):
+def ROT13_ENCRYPT(text):
 
+	crypted_text = ""
+
+	for i in text:
+		if i in ENCRYPT_DICT:
+			crypted_text += ENCRYPT_DICT.get(i)
+		else:
+			crypted_text += i
+
+	return crypted_text
+#########################################################################
+def ROT13_DECRYPT(text):
+
+	decrypted_text = ""
+
+	for i in text:
+		if i in DEENCRYPT_DICT.keys():
+			decrypted_text += DEENCRYPT_DICT.get(i)
+		else:
+			decrypted_text += i
+
+	return decrypted_text
+#########################################################################
+def file_work(function):
 	FILE_NAME = None
 	FILE = None
 
@@ -62,20 +77,29 @@ def encrypt_file(function = encrypt):
 	FILE.write(encr_data)
 	FILE.close()
 #########################################################################
+def encrypt_file():
+	file_work(ROT13_ENCRYPT)
+#########################################################################
 def decrypt_file():
-	encrypt_file(decrypt)
+	file_work(ROT13_DECRYPT)
 #########################################################################
 def encrypt_string():
 	STRING = take_something(str, "\t\tput your string here : ")
-	print("\t\t", encrypt(STRING))
+	print("\t\t", ROT13_ENCRYPT(STRING))
 #########################################################################
 def decrypt_string():
 	STRING = take_something(str, "\t\tput your string here : ")
-	print("\t\t", decrypt(STRING))
+	print("\t\t", ROT13_DECRYPT(STRING))
 #########################################################################
 
 
 #main cycle
+
+if __name__ == "main":
+	import encryption_test
+
+	assert encryption_test.cryption_function_testing(), "crypt functions error"
+
 while True:
 	choice = take_something(int, menu)
 
