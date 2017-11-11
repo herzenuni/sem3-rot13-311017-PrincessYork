@@ -97,8 +97,8 @@ def decrypt_string():
 
 if __name__ == "main":
 	import encryption_test
-
-	assert encryption_test.cryption_function_testing(), "crypt functions error"
+	assert encryption_test.cryption_function_testing(ROT13_ENCRYPT, ROT13_DECRYPT), "1"
+	assert encryption_test.cryption_function_testing(ROT13_ENCRYPT, ROT13_DECRYPT, "hello, world"), "2"
 
 while True:
 	choice = take_something(int, menu)
